@@ -1,0 +1,218 @@
+import React, { useState } from 'react'  
+import axios from 'axios';  
+// import { Container,Button,Form,Row,Col } from 'react-bootstrap';
+
+
+function Signup(props) {  
+  
+  const [data, setdata] = useState({ 
+    email: '',
+    password: '', 
+    name: '',
+    mobile:'',
+    })  
+  
+  const apiUrl = "http://localhost:5000/api/registration";  
+  
+  const Registration = (e) => {  
+    e.preventDefault();  
+  
+    const data1 = { 
+      email: data.email,
+      password: data.password, 
+      name: data.name,
+      mobile:data.mobile
+    };  
+    axios.post(apiUrl, data1)  
+      .then((result) => {
+        if (result.data.status === 'Invalid')  
+          alert('Invalid User');  
+        else  
+        alert('success');
+        document.getElementById("formElement").reset()
+
+      })  
+  }  
+  const onChange = (e) => {  
+    e.persist();  
+    setdata({ ...data, [e.target.name]: e.target.value });  
+  }  
+  return (  
+    <div className="container">  
+       
+          <div className="row justify-content-center">  
+            <div className="col-lg-5">  
+              <div className="card o-hidden border-0 shadow-lg my-5">  
+              <h4 className='text-center'>Registration</h4>
+                  
+                <form onSubmit={Registration} className="user" id="formElement">  
+                  <div className="form-group">  
+                    
+                    <div className="col-sm-12">  
+                    <label>Name</label>
+                      <input type="text" name="name" onChange={onChange} value={data.name} className="form-control fm" 
+                      id="Name" placeholder="Name"  required/>  
+                    </div>  
+                  </div>  
+
+                  <div className="form-group">  
+                    
+                    <div className="col-sm-12">  
+                    <label>Mobile</label>
+                      <input type="number" name="mobile" onChange={onChange} value={data.mobile} className="form-control fm" 
+                      id="Name" placeholder="Mobile"  required/>  
+                    </div>  
+                  </div>  
+
+                  <div className="form-group">  
+                    <label>Email</label>
+                  <div className="col-sm-12 mb-3 mb-sm-0">  
+                      <input type="email" name="email" onChange={onChange} value={data.email} className="form-control fm" 
+                      id="email" placeholder="Email" required />  
+                    </div> 
+                  </div>
+
+                    <div className="form-group">  
+                    <label>Password</label>
+                    <div className="col-sm-12 mb-3 mb-sm-0">  
+                      <input type="password" name="password" onChange={onChange} value={data.password} className="form-control fm" id="password" placeholder="Password" required/>  
+                    </div> 
+                  </div>
+                  <br />
+                  <button type="submit" className=" form-control fm btn-success  btn-block">  
+                    Signup  
+                </button>  
+                </form>  
+              </div>  
+            </div>  
+          </div>  
+        </div>  
+
+          //   <Container>
+  //   <Row>
+  //     <Col xs={6}>
+  //     <div className='signup_sec'> 
+  //     <h4 className='text-center'>Registration</h4>   
+  //   <Form>
+  //   <Form.Group className="mb-3" controlId="formBasicEmail">
+  //       <Form.Label>Email address</Form.Label>
+  //       <Form.Control type="email" placeholder="Enter email" />
+  //     </Form.Group>
+
+  //     <Form.Group className="mb-3" controlId="formBasicEmail">
+  //       <Form.Label>Email address</Form.Label>
+  //       <Form.Control type="email" placeholder="Enter email" />
+  //     </Form.Group>
+  
+  //   <Form.Group className="mb-3" controlId="formBasicPassword">
+  //     <Form.Label>Password</Form.Label>
+  //     <Form.Control type="password" placeholder="Password" />
+  //   </Form.Group>
+  //   <Form.Group className="mb-3" controlId="formBasicCheckbox">
+  //     <Form.Check type="checkbox" label="Check me out" />
+  //   </Form.Group>
+  //   <Button variant="primary" type="submit">
+  //     Submit
+  //   </Button>
+  // </Form>
+  // </div>
+  // </Col>
+  // </Row>
+  // </Container>
+
+  )  
+}  
+  
+export default Signup;
+
+
+
+
+
+
+
+
+
+import React, { useState } from 'react'   
+import axios from 'axios'; 
+// import { useRoutes} from "react-router-dom";
+
+function Login(props) {  
+
+    const [data, setData] = useState({ 
+      email: '',
+      password: ''
+    });  
+    // const router = useRoutes();
+  
+    const apiUrl = "http://localhost:5000/api/customerlogin";    
+    const Login = (e) => {    
+            e.preventDefault();    
+            // alert('helo')
+
+    const details = { 
+      email:data.email,
+      password: data.password
+     };    
+     
+     axios.post(apiUrl, details).then((result) => {  
+      if(result.data.status =="200"){
+        let customerResult = result.data.data.user_data[0];
+          localStorage.clear();
+          localStorage.setItem("customertoken",customerResult.token);
+          // alert('Login success...')
+          window.location.href = '/welcome';
+          // router.push('/welcome') 
+      }else{
+        alert("Login Failed... Please check username and password")
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  };    
+          
+          const onChange = (e) => {    
+                e.persist();    
+                setData({...data, [e.target.name]: e.target.value});    
+              }    
+    return (  
+        
+        <div className="container">  
+        <div className="row justify-content-center">  
+          <div className="col-lg-4">  
+           <div className="card o-hidden border-0 shadow-lg my-5">  
+              <h4 className='text-center'>Login</h4>
+
+              <form onSubmit={Login} className="user" id="formElement">  
+                  
+                  <div className="form-group">  
+                    <label>Email</label>
+                  <div className="col-sm-12 mb-3 mb-sm-0">  
+                      <input type="email" name="email" onChange={onChange} value={data.email}  className="form-control fm" 
+                      id="email" placeholder="Email" required />  
+                    </div> 
+                  </div>
+
+                    <div className="form-group">  
+                    <label>Password</label>
+                    <div className="col-sm-12 mb-3 mb-sm-0">  
+                      <input type="password" name="password" onChange={onChange}  value={data.password} className="form-control fm" id="password" placeholder="Password" required/>  
+                    </div> 
+                  </div>
+                  <br />
+                  <button type="submit" className=" form-control fm btn-success  btn-block">  
+                    Login  
+                </button>  
+
+                </form>  
+                <p>Are you new customer? Registration Here</p>
+
+               </div>  
+            </div>  
+           </div>    
+          </div>
+    )  
+}  
+  
+export default Login;

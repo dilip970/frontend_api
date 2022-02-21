@@ -1,0 +1,36 @@
+body{
+    background-color: darkcyan;
+}
+
+.signup_sec{
+    box-shadow: 0px 1px 2px 0px gray;
+    padding: 20px;
+    margin-top: 20px;
+}
+.card{
+    padding: 20px;
+}
+.card label{
+    margin-top: 5px;
+    padding-bottom: 5px;
+}
+.fm{
+    border-radius: 0px;
+    border: 1px solid rgb(17, 14, 14);
+    
+}
+.image_card{
+    margin-top: 50px;
+}
+.image_card img{
+    width: 100%;
+}
+.error{
+    color: red;
+    padding-top: 2px;
+    font-size: 12px;
+}
+.tags{
+    padding-top: 10px;
+    font-size: 14px;
+}
